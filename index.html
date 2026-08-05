@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Dragos Caravasile — technical writer who runs documentation as an engineering discipline.">
+  <title>Dragos Caravasile — Technical Writer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&amp;family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&amp;family=Instrument+Serif:ital@0;1&amp;display=swap" rel="stylesheet">
+  <style>
+    :root { --ink:#101018; --paper:#f6f1e8; --acid:#caff32; --orange:#ff5a38; --violet:#a693ff; --muted:#53536a; --line:#101018; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; color:var(--ink); background-color:var(--paper); background-image:radial-gradient(#bdb6ac .7px, transparent .7px); background-size:10px 10px; font-family:"DM Sans", sans-serif; }
+    a { color:inherit; text-decoration:none; }
+    .wrap { width:min(1220px, calc(100% - 48px)); margin:0 auto; }
+    nav { height:72px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line); background:var(--paper); font:500 12px "DM Mono", monospace; text-transform:uppercase; }
+    .brand i { display:inline-block; width:7px; height:7px; margin:0 7px 1px; border-radius:50%; background:var(--orange); }
+    .links { display:flex; gap:23px; color:var(--muted); }
+    .links a:hover { color:var(--ink); }
+    .hero { position:relative; overflow:hidden; padding:44px 0 45px; border-bottom:1px solid var(--line); }
+    .hero::after { content:"DOCS / OPS"; position:absolute; top:4px; right:-27px; color:rgba(16,16,24,.055); font:500 clamp(90px,17vw,265px)/1 "DM Mono",monospace; letter-spacing:-.12em; pointer-events:none; }
+    .eyebrow, .label, .hero-tag, .fact span { color:var(--muted); font:500 12px "DM Mono",monospace; letter-spacing:.025em; text-transform:uppercase; }
+    .eyebrow::before { content:"●"; margin-right:10px; color:var(--orange); }
+    h1, h2, h3, p { margin-top:0; }
+    h1 { position:relative; z-index:1; max-width:1120px; margin:29px 0 35px; font:500 clamp(49px,7vw,108px)/.9 "DM Mono",monospace; letter-spacing:-.095em; text-transform:uppercase; }
+    h1 em, h2 em { color:var(--orange); font-family:"Instrument Serif",serif; font-style:italic; font-weight:400; letter-spacing:-.055em; text-transform:none; }
+    .hero-copy { position:relative; z-index:1; display:grid; grid-template-columns:1.2fr .8fr; gap:40px; align-items:end; }
+    .hero-copy p { max-width:670px; margin:0; padding:17px 20px; border-radius:0 20px 20px 0; background:var(--ink); color:var(--paper); font-size:clamp(19px,2.1vw,27px); line-height:1.25; letter-spacing:-.03em; }
+    .hero-tag { justify-self:end; max-width:315px; padding:14px; border:1px solid var(--ink); background:var(--acid); color:var(--ink); transform:rotate(-2deg); }
+    .facts { position:relative; z-index:1; display:grid; grid-template-columns:repeat(3,1fr); margin-top:46px; border:1px solid var(--line); background:var(--paper); }
+    .fact { min-height:92px; padding:20px; border-right:1px solid var(--line); }
+    .fact:last-child { border-right:0; }
+    .fact:nth-child(2) { background:var(--violet); }
+    .fact:nth-child(3) { background:var(--acid); }
+    .fact b { display:block; margin-bottom:8px; font:500 18px "DM Mono",monospace; letter-spacing:-.07em; }
+    section { padding:100px 0; border-bottom:1px solid var(--line); background:var(--paper); }
+    .section-head, .samples { display:grid; grid-template-columns:1fr 2fr; gap:30px; }
+    h2 { margin:0; font:500 clamp(37px,4.6vw,66px)/.94 "DM Mono",monospace; letter-spacing:-.08em; text-transform:uppercase; }
+    .lede { max-width:760px; margin:0; font-size:clamp(20px,2.2vw,29px); line-height:1.26; letter-spacing:-.03em; }
+    .case-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:13px; margin-top:60px; }
+    .case { display:flex; flex-direction:column; min-height:370px; padding:24px; border:1px solid var(--line); transition:transform .18s ease,box-shadow .18s ease; }
+    .case:hover { transform:rotate(-1.3deg) translateY(-7px); box-shadow:9px 9px 0 var(--violet); }
+    .case:nth-child(1) { border-radius:28px 0 0; }
+    .case:nth-child(2) { border-radius:0 28px 0 0; background:var(--ink); color:var(--paper); }
+    .case:nth-child(3) { border-radius:0 0 28px; background:var(--acid); }
+    .case .num { color:var(--orange); font:500 12px "DM Mono",monospace; text-transform:uppercase; }
+    .case:nth-child(2) .num { color:var(--acid); }
+    .case h3, .phase h3 { margin:45px 0 13px; font:500 26px/1 "DM Mono",monospace; letter-spacing:-.07em; text-transform:uppercase; }
+    .case p { margin:0; color:var(--muted); font-size:15px; line-height:1.45; }
+    .case:nth-child(2) p { color:#c3c8c1; }
+    .case a { margin-top:auto; padding-top:30px; font:500 12px "DM Mono",monospace; }
+    .dark { border-color:var(--ink); background-color:var(--ink); background-image:linear-gradient(90deg,rgba(202,255,50,.08) 1px,transparent 1px),linear-gradient(rgba(202,255,50,.08) 1px,transparent 1px); background-size:28px 28px; color:var(--paper); }
+    .dark .label { color:#bfc5bd; }
+    .dark h2 { max-width:940px; }
+    .dark h2 em { color:var(--acid); }
+    .timeline { margin-top:58px; border-top:2px solid var(--acid); }
+    .phase { display:grid; grid-template-columns:170px 1fr 1fr; gap:28px; padding:24px; border:1px solid #6c716d; border-top:0; background:rgba(16,16,24,.87); }
+    .phase:hover { background:var(--violet); color:var(--ink); }
+    .phase time { color:var(--acid); font:500 12px "DM Mono",monospace; text-transform:uppercase; }
+    .phase:hover time, .phase:hover p { color:var(--ink); }
+    .phase h3 { margin:0; }
+    .phase p { margin:0; color:#bec5bd; font-size:15px; line-height:1.45; }
+    .sample-list { border-top:1px solid var(--line); }
+    .sample { display:grid; grid-template-columns:1fr auto; gap:20px; align-items:center; padding:20px 12px; border-bottom:1px solid var(--line); transition:background .15s ease; }
+    .sample:hover { background:var(--acid); }
+    .sample:hover span { transform:rotate(45deg); }
+    .sample h3 { margin:0 0 4px; font-size:17px; letter-spacing:-.02em; }
+    .sample p { margin:0; color:var(--muted); font-size:14px; }
+    .sample span { font:500 17px "DM Mono",monospace; }
+    .principles { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-top:73px; }
+    .principle { min-height:174px; padding:17px 14px; border:1px solid var(--line); background:#e6dfd3; font:500 13px/1.3 "DM Mono",monospace; }
+    .principle:first-child { background:var(--acid); }
+    .principle:nth-child(2) { background:var(--violet); }
+    .principle:nth-child(4) { background:var(--orange); }
+    .principle b { display:block; margin-bottom:36px; color:var(--orange); }
+    .principle:first-child b { color:var(--ink); }
+    .toolbox { display:flex; flex-wrap:wrap; gap:9px; margin-top:60px; padding:25px; border:1px solid var(--line); background:#e6dfd3; box-shadow:10px 10px 0 var(--ink); }
+    .tool { padding:9px 11px; border:1px solid var(--line); background:var(--paper); font:500 12px "DM Mono",monospace; }
+    .tool:nth-child(4n) { background:var(--acid); }
+    .notes-grid { display:grid; grid-template-columns:1.25fr .75fr; gap:13px; margin-top:57px; }
+    .notes-panel, .docks-teaser { min-height:285px; padding:27px; border:1px solid var(--line); }
+    .notes-panel { background:var(--ink); color:var(--paper); }
+    .notes-panel p { max-width:610px; margin:30px 0 0; color:#c3c8c1; font-size:18px; line-height:1.42; }
+    .notes-panel .mini-label { color:var(--acid); }
+    .mini-label { font:500 12px "DM Mono",monospace; text-transform:uppercase; }
+    .docks-teaser { display:flex; flex-direction:column; justify-content:space-between; background:var(--violet); transform:rotate(1.2deg); }
+    .docks-teaser b { max-width:350px; font:400 clamp(35px,4vw,54px)/.88 "Instrument Serif",serif; letter-spacing:-.04em; }
+    .docks-teaser p { max-width:280px; margin:0; font:500 12px/1.45 "DM Mono",monospace; text-transform:uppercase; }
+    .contact { padding:105px 0 72px; border:0; background-color:var(--acid); background-image:linear-gradient(45deg,transparent 45%,rgba(16,16,24,.13) 45%,rgba(16,16,24,.13) 55%,transparent 55%); background-size:20px 20px; }
+    .contact h2 { max-width:800px; font-size:clamp(48px,7vw,100px); }
+    .contact p { max-width:460px; margin:29px 0; font-size:18px; line-height:1.45; }
+    .contact-actions { display:flex; flex-wrap:wrap; gap:16px; align-items:center; }
+    .button { display:inline-block; padding:15px 18px; background:var(--ink); color:var(--paper); box-shadow:6px 6px 0 var(--orange); font:500 13px "DM Mono",monospace; }
+    .email-link { border-bottom:1px solid var(--ink); font:500 13px "DM Mono",monospace; }
+    footer { padding:21px 0; background:var(--ink); color:#bfc5bd; font:500 11px "DM Mono",monospace; text-transform:uppercase; }
+    footer .wrap { display:flex; justify-content:space-between; }
+    @media (max-width:760px) {
+      .wrap { width:min(100% - 32px,1220px); }
+      .links a:not(:last-child) { display:none; }
+      .hero { padding-top:38px; }
+      h1 { font-size:clamp(43px,14.5vw,80px); }
+      .hero-copy, .section-head, .samples { grid-template-columns:1fr; gap:25px; }
+      .hero-copy p { border-radius:0; }
+      .hero-tag { justify-self:start; }
+      .facts { grid-template-columns:1fr; margin-top:34px; }
+      .fact { border-right:0; border-bottom:1px solid var(--line); }
+      .fact:last-child { border-bottom:0; }
+      section, .contact { padding:70px 0; }
+      .case-grid { grid-template-columns:1fr; gap:10px; }
+      .case { min-height:285px; border-radius:0 !important; }
+      .phase { grid-template-columns:1fr; gap:12px; }
+      .principles { grid-template-columns:1fr 1fr; }
+      .notes-grid { grid-template-columns:1fr; }
+      .docks-teaser { transform:none; }
+      .principle { min-height:130px; }
+      footer .wrap { flex-direction:column; gap:14px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap"><nav><a href="#top" class="brand">Dragos<i></i>Caravasile</a><div class="links"><a href="#work">Work</a><a href="#samples">Samples</a><a href="#notes">Notes</a><a href="#contact">Contact</a><a href="https://www.linkedin.com/in/dragoscaravasile/" target="_blank" rel="noreferrer">LinkedIn ↗</a></div></nav></div>
+  <main id="top">
+    <div class="wrap"><header class="hero"><div class="eyebrow">Head of DCS · Technical Writer · FLOWX.AI</div><h1>I run documentation as an <em>engineering discipline.</em></h1><div class="hero-copy"><p>I own the public docs surface for an enterprise AI and business-process automation platform: feature docs, deployment guides, architecture overviews, release notes, and the systems that keep them true.</p><div class="hero-tag">For platform administrators, process designers, developers, and business analysts working in high-stakes environments.</div></div><div class="facts"><div class="fact"><b>2,800+</b><span>Repository commits</span></div><div class="fact"><b>~76%</b><span>Authored by me</span></div><div class="fact"><b>Wiki → codebase → policy</b><span>The operating arc</span></div></div></header></div>
+    <section id="work"><div class="wrap"><div class="section-head"><div class="label">01 / What I built</div><div><h2>Not a documentation site. <em>A documentation operation.</em></h2><p class="lede" style="margin-top:27px">The differentiator is not polished prose. It is a documentation surface verified against source code, gated by automated checks, and designed to evolve at the pace of the product.</p></div></div><div class="case-grid"><article class="case"><div class="num">Case study 01</div><h3>Docs-as-code platform</h3><p>Moved the full documentation surface from GitBook to Mintlify and MDX, then built versioned trees, reusable components, branch previews, quality gates, and single-sourced shared content.</p><a href="https://docs.flowx.ai/5.9/docs/introduction" target="_blank" rel="noreferrer">View the docs ↗</a></article><article class="case"><div class="num">Case study 02</div><h3>AI-assisted docs pipeline</h3><p>Built custom agent skills and deterministic checks for quality audits, config sync, release coverage, screenshot refreshes, analytics triage, and support-signal mining.</p><a href="#method">See the method ↓</a></article><article class="case"><div class="num">Case study 03</div><h3>Release &amp; versioning management</h3><p>Run documentation across LTS and monthly release lines, with availability badges, structured release notes, deployment guidelines, and a maintained routing playbook.</p><a href="https://docs.flowx.ai/release-notes" target="_blank" rel="noreferrer">View release notes ↗</a></article></div></div></section>
+    <section id="method" class="dark"><div class="wrap"><div class="section-head"><div class="label">02 / How it got here</div><h2>Wiki <em>→</em> codebase <em>→</em> a system that enforces its own standards.</h2></div><div class="timeline"><article class="phase"><time>Before 2024</time><h3>The GitBook era</h3><p>Documentation lived as a wiki: no validation, versioned trees, or reliable automation.</p></article><article class="phase"><time>Feb—Mar 2024</time><h3>The founding move</h3><p>Completed a roughly six-week solo migration to Mintlify and MDX. Putting docs in git made all later system-building possible.</p></article><article class="phase"><time>2024—2025</time><h3>Versioning discipline</h3><p>Added product-version trees alongside the LTS and monthly-release model, so readers can answer the question that matters: “Is this available in my version?”</p></article><article class="phase"><time>2026</time><h3>Judgment becomes policy</h3><p>Formal style rules, validation scripts, AI pipeline skills, policy hooks, and recurring feedback scans turned editorial judgment into a repeatable system.</p></article></div></div></section>
+    <section id="samples"><div class="wrap"><div class="samples"><div><div class="label">03 / Selected public work</div><h2 style="margin-top:20px">Documentation people can <em>use.</em></h2></div><div class="sample-list"><a class="sample" href="https://docs.flowx.ai/5.9/docs/platform-overview/flowx-architecture" target="_blank" rel="noreferrer"><div><h3>Platform architecture</h3><p>Architecture overview for a BPMN, AI, and business-process automation platform.</p></div><span>↗</span></a><a class="sample" href="https://docs.flowx.ai/5.9/docs/getting-started/building-your-first-proc" target="_blank" rel="noreferrer"><div><h3>Getting started: first process</h3><p>A hands-on path into building on the platform.</p></div><span>↗</span></a><a class="sample" href="https://docs.flowx.ai/5.9/ai-platform/ai-in-flowx" target="_blank" rel="noreferrer"><div><h3>AI platform documentation</h3><p>Product documentation for the AI platform surface.</p></div><span>↗</span></a><a class="sample" href="https://docs.flowx.ai/5.9/setup-guides/flowx-engine-setup-guide/process-instance-data-archiving" target="_blank" rel="noreferrer"><div><h3>Operational setup: data archiving</h3><p>A deep setup guide for a real operational concern.</p></div><span>↗</span></a><a class="sample" href="https://docs.flowx.ai/release-notes/v5.x/v5.9.0-june-2026/v5.9.0-june-2026" target="_blank" rel="noreferrer"><div><h3>Feature release notes</h3><p>Structured release communication with feature-level detail.</p></div><span>↗</span></a></div></div><div class="principles"><div class="principle"><b>01</b>Coverage before everything.</div><div class="principle"><b>02</b>Usefulness before freshness.</div><div class="principle"><b>03</b>Freshness before discoverability.</div><div class="principle"><b>04</b>Discoverability before aesthetics.</div><div class="principle"><b>05</b>The best docs are invisible.</div></div></div></section>
+    <section><div class="wrap"><div class="section-head"><div class="label">04 / Working setup</div><div><h2>Never document from <em>memory.</em></h2><p class="lede" style="margin-top:27px">Every claim should be verifiable against the filesystem, the codebase, or tool output. That protects readers from plausible-but-wrong documentation—and protects the product from accidental promises.</p></div></div><div class="toolbox"><span class="tool">Mintlify</span><span class="tool">MDX / Markdown</span><span class="tool">Git &amp; branch previews</span><span class="tool">Claude Code agent skills</span><span class="tool">Python / shell validation</span><span class="tool">Playwright</span><span class="tool">API verification</span><span class="tool">Java / Spring source reading</span><span class="tool">TypeScript / Angular source reading</span><span class="tool">Helm / Kubernetes</span><span class="tool">BPMN &amp; process automation</span><span class="tool">Kafka event architecture</span><span class="tool">IAM: Keycloak / OAuth</span><span class="tool">Release management</span></div></div></section>
+    <section id="notes"><div class="wrap"><div class="section-head"><div class="label">05 / Field notes</div><div><h2>Notes from the <em>docs desk.</em></h2><p class="lede" style="margin-top:27px">A space for practical thinking about documentation systems, release discipline, and building trust with technical readers.</p></div></div><div class="notes-grid"><div class="notes-panel"><div class="mini-label">Blog / incoming</div><p>First field notes are being assembled. Expect writing about docs-as-code, verification, content operations, and the unglamorous machinery behind reliable documentation.</p></div><div class="docks-teaser"><div class="mini-label">In the works</div><b>Working on<br>the Doc(k)s</b><p>Something small, strange, and documentation-adjacent is on its way.</p></div></div></div></section>
+    <section id="contact" class="contact"><div class="wrap"><div class="label">Contact</div><h2>Make the hard parts <em>legible.</em></h2><p>Open to conversations about technical writing, docs-as-code, documentation systems, and developer experience.</p><div class="contact-actions"><a class="button" href="https://www.linkedin.com/in/dragoscaravasile/" target="_blank" rel="noreferrer">Connect on LinkedIn ↗</a><a class="email-link" href="mailto:cara.dragos13@gmail.com">cara.dragos13@gmail.com</a></div></div></section>
+  </main>
+  <footer><div class="wrap"><span>© 2026 Dragos Caravasile</span><span>Technical writing / documentation systems</span></div></footer>
+</body>
+</html>
