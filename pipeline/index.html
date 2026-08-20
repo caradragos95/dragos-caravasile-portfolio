@@ -68,6 +68,11 @@
     .rule b { color:var(--acid); font:500 13px "DM Mono",monospace; }
     .rule h3 { margin:0; font-size:16px; color:var(--paper); }
     .rule p { margin:0; color:#bec5bd; font-size:15px; line-height:1.45; }
+    .snippet { margin:34px 0 0; padding:20px 22px; border:1px solid #6c716d; background:#07070b; color:#c3c8c1; font:400 13px/1.65 "DM Mono",monospace; white-space:pre; overflow-x:auto; }
+    .snippet .bad { color:#ff8a6e; }
+    .snippet .dim { color:#7d8280; }
+    .caption { margin:10px 0 0; color:var(--muted); font:500 12px "DM Mono",monospace; text-transform:uppercase; }
+    .dark .caption { color:#bfc5bd; }
     .cost { display:grid; grid-template-columns:repeat(2,1fr); gap:13px; margin-top:34px; }
     .cost div { padding:22px; border:1px solid var(--line); background:#e6dfd3; }
     .cost div:first-child { background:var(--acid); }
@@ -107,8 +112,8 @@
 
     <section><div class="wrap measure">
       <div class="label">01 / The problem</div>
-      <h2>Plausible is the dangerous failure mode.</h2>
-      <p>Documentation rarely fails by being obviously wrong. It fails by being plausible: a config value that looks right, reads right, reviews clean, and does nothing when a reader pastes it into production.</p>
+      <h2>Config values that look right and do <em>nothing.</em></h2>
+      <p>Documentation fails most often by being plausible. A config value looks right, reads right, reviews clean, and does nothing at all when a reader pastes it into production.</p>
       <p>Environment variable names are the canonical example. Spring Boot's relaxed binding does not map a property to an env var the way most people assume. It uppercases, converts dots to underscores, and <strong>removes hyphens entirely rather than converting them</strong>. So <code>app.rate-limit.enabled</code> becomes <code>APP_RATELIMIT_ENABLED</code>, not <code>APP_RATE_LIMIT_ENABLED</code>.</p>
       <p>Both forms look correct in a table. Only one works. Reading the source produces the wrong one, confidently, because the property name in the code contains the hyphen that the binding rule deletes. A reviewer checking the doc against the source will agree with the mistake.</p>
       <div class="pull">The reader cannot detect this class of error. They will conclude the product is broken, not the documentation. That is what makes it worth engineering against rather than proofreading against.</div>
@@ -120,9 +125,17 @@
       <div class="measure">
         <div class="label">02 / The design decision</div>
         <h2>Move the check <em>into</em> the authoring loop.</h2>
-        <p>The obvious place for these checks is CI. CI is also the wrong place, because by the time CI runs the author has moved on, the context is gone, and the feedback arrives as a chore rather than a correction.</p>
+        <p>CI is the obvious place for these checks, and it is too late. By the time CI runs the author has moved on, the context is gone, and the feedback arrives as a chore.</p>
         <p>Instead the guard runs as an editor hook, after every single file edit. It reads the edit, applies the rules, and on a violation exits with a status that blocks the change and returns the reason as text the author sees immediately. The mistake is corrected in the same breath it was made, with the reasoning still loaded.</p>
         <p>Six rules run on every edit. Each one exists because the failure it describes already reached a page.</p>
+        <div class="snippet"><span class="dim">// edit saved to guides/rate-limits.mdx</span>
+
+<span class="bad">[doc-guard]</span> guides/rate-limits.mdx uses component(s) with
+no matching import: <span class="bad">&lt;AvailabilityNote&gt;</span> (line 12).
+Add the import right after the frontmatter.
+
+<span class="dim">exit 2 - edit blocked, message returned to the author</span></div>
+        <p class="caption">The author sees this before the next edit, not in CI.</p>
       </div>
       <div class="rules">
         <article class="rule"><b>01</b><h3>Config files must parse</h3><p>Any edited JSON must be valid. Catches the trailing-comma class of bug that had broken the navigation config before.</p></article>
@@ -139,18 +152,18 @@
       <h2>Scope the rules to what the edit <em>introduced.</em></h2>
       <p>The first version of a gate like this fails for a predictable reason: it blocks on everything it finds, including rot it did not cause. Fixing a typo on a five-year-old page turns into an argument with the linter about six pre-existing broken links. People route around gates that behave that way, and a gate that gets routed around is worse than no gate, because it produces false confidence.</p>
       <p>So the structural checks only evaluate content the edit actually introduced. A surgical edit to a legacy page is never blocked for problems it did not create. Template directories are exempt outright, since templates carry placeholder links and components by design.</p>
-      <div class="pull">A quality gate is a product with users, and the users are writers under deadline. If it is not survivable it will not be used, no matter how correct it is.</div>
+      <p>A quality gate is a product with users, and the users are writers under deadline. An unsurvivable gate goes unused however correct it is.</p>
       <p>The rules that stayed absolute are the ones with no legitimate exception: valid config, no internal keys in public copy. The rules with real exceptions got scoped, allowlisted, or exempted in code rather than enforced by nagging.</p>
     </div></section>
 
     <section><div class="wrap measure">
       <div class="label">04 / What it cost</div>
-      <h2>The honest trade.</h2>
+      <h2>What the rules cost.</h2>
       <div class="cost">
         <div><h3>What it bought</h3><p>A whole category of error stopped reaching readers, and stopped needing to be remembered. The rules survive turnover, context switching, and the last hour before a release cut.</p></div>
         <div><h3>What it cost</h3><p>Every rule is a maintenance surface. A check that fires wrongly trains people to bypass it, so the false-positive budget is close to zero, and each new rule has to earn its place against that.</p></div>
       </div>
-      <p style="margin-top:34px">The general principle is narrower than "automate quality" and more useful: encode a rule only after the failure has happened at least once, and scope it so it can only fire on the thing that failed. Rules written in anticipation tend to be wrong about what actually breaks.</p>
+      <p style="margin-top:34px">The principle is narrow: encode a rule only after the failure has happened at least once, and scope it so it can only fire on the thing that failed. Rules written in anticipation tend to be wrong about what actually breaks.</p>
       <p>The guard's own history is the evidence for that. It went in with two rules. Six weeks later it had six, and every one of the four added since was written after a specific failure reached a page rather than in anticipation of one. Nothing about the final rule set was obvious at the start.</p>
     </div></section>
 

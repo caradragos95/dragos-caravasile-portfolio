@@ -76,6 +76,10 @@
     .decision b { color:var(--acid); font:500 13px "DM Mono",monospace; }
     .decision h3 { margin:0; font-size:16px; color:var(--paper); }
     .decision p { margin:0; color:#bec5bd; font-size:15px; line-height:1.45; }
+    .snippet { margin:34px 0 0; padding:20px 22px; border:1px solid var(--line); background:#07070b; color:#c3c8c1; font:400 13px/1.65 "DM Mono",monospace; white-space:pre; overflow-x:auto; }
+    .snippet .key { color:var(--acid); }
+    .snippet .dim { color:#7d8280; }
+    .caption { margin:10px 0 0; color:var(--muted); font:500 12px "DM Mono",monospace; text-transform:uppercase; }
     .cost { display:grid; grid-template-columns:repeat(2,1fr); gap:13px; margin-top:34px; }
     .cost div { padding:22px; border:1px solid var(--line); background:#e6dfd3; }
     .cost div:first-child { background:var(--acid); }
@@ -117,11 +121,11 @@
 
     <section><div class="wrap measure">
       <div class="label">01 / The problem</div>
-      <h2>A wiki cannot be held to a <em>standard.</em></h2>
+      <h2>What the wiki could <em>not</em> do.</h2>
       <p>The documentation lived in a hosted wiki. It was editable, it was online, and it was reasonably well written. What it could not do was be checked.</p>
       <p>Nothing could validate a link before a reader found it broken. Nothing could tell you which version of the product a page described. Nothing could run in CI, because there was no CI to run. Every rule about quality was a rule somebody had to remember, and rules that live in memory decay at exactly the rate the team gets busy.</p>
-      <div class="pull">The limitation was not the tool's polish. It was that the content was not an artifact you could compute over. Everything downstream of that was blocked.</div>
-      <p>That is the actual argument for docs-as-code, and it is narrower than the usual pitch. Not that writers should use git because engineers do. That documentation with real stakes needs automated verification, and automated verification needs the content to be files in a repository.</p>
+      <p>The limitation was structural. The content was not an artifact you could compute over, and everything downstream of that was blocked.</p>
+      <p>That is the argument for docs-as-code, and it is narrower than the usual pitch: documentation with real stakes needs automated verification, and automated verification needs the content to be files in a repository.</p>
     </div></section>
 
     <section class="dark"><div class="wrap">
@@ -129,7 +133,7 @@
         <div class="label">02 / The constraint</div>
         <h2>The site could not go <em>dark.</em></h2>
         <p>A documentation migration has an unusual property: the thing being moved is in production the entire time. Customers are reading it. Support is linking to it. Sales is citing it. There is no maintenance window for a knowledge base.</p>
-        <p>So the work had to be additive until the moment it was not. Build the new tree alongside the old, keep the old one authoritative until the new one was demonstrably complete, then cut over once rather than in fragments. Half-migrated documentation is worse than either state, because readers cannot tell which half they are in.</p>
+        <p>So the work stayed additive until the cutover. Build the new tree alongside the old, keep the old one authoritative until the new one was demonstrably complete, then move across in one step. Half-migrated documentation is worse than either state, because readers cannot tell which half they are in.</p>
       </div>
       <div class="figures">
         <div class="fig"><b>~400</b><span>Pages moved</span></div>
@@ -140,9 +144,15 @@
 
     <section><div class="wrap measure">
       <div class="label">03 / The real work</div>
-      <h2>Moving the files was the <em>easy</em> part.</h2>
-      <p>Format conversion is mostly mechanical and mostly scriptable. The work that actually took the six weeks was deciding what the structure should be, because a migration is the only moment you get to change it for free.</p>
+      <h2>Where the six weeks <em>went.</em></h2>
+      <p>Format conversion is mechanical and mostly scriptable. The six weeks went on deciding what the structure should be, because a migration is the only moment you get to change it for free.</p>
       <p>Once content is in the new system and people are linking to it, the structure calcifies. Every decision deferred at migration time becomes a decision that needs a redirect map and a change-management conversation later. So the questions had to be answered up front, while the cost of answering them was still zero.</p>
+      <div class="snippet"><span class="key">5.9/</span>            <span class="dim">current LTS: docs, setup guides, AI platform</span>
+<span class="key">5.1/</span>            <span class="dim">previous LTS, maintained in parallel</span>
+<span class="key">release-notes/</span>  <span class="dim">per-release, versioned alongside</span>
+<span class="key">snippets/</span>       <span class="dim">written once, included everywhere</span>
+<span class="key">docs.json</span>       <span class="dim">navigation as config, diffed and reviewed</span></div>
+      <p class="caption">The shape those four decisions produced, still in use two years on.</p>
     </div>
     <div class="wrap"><div class="decisions">
       <article class="decision"><b>01</b><h3>Versioned trees, not a versioned page</h3><p>Readers need to answer "is this available in my version" without cross-referencing a release note. That means the version boundary belongs in the tree structure, not in prose caveats scattered through the body.</p></article>
@@ -153,12 +163,12 @@
 
     <section><div class="wrap measure">
       <div class="label">04 / What it cost</div>
-      <h2>The honest trade.</h2>
+      <h2>Trade-offs.</h2>
       <div class="cost">
         <div><h3>What it bought</h3><p>Everything after it. Validation, quality gates, release discipline, versioning, previews, and automation all became possible the moment the content was files under version control. None of them were reachable before.</p></div>
         <div><h3>What it cost</h3><p>A real contribution barrier. Occasional contributors now need git and a build, which is a genuine tax on people who used to click edit. That tax has to be paid down deliberately, with templates, previews, and tooling, or contribution quietly stops.</p></div>
       </div>
-      <p style="margin-top:34px">Two years on, the repository holds roughly 2,900 commits. The migration itself accounts for a small fraction of them. That ratio is the point: the migration was not the achievement, it was the precondition for a documentation surface that could be maintained at all.</p>
+      <p style="margin-top:34px">Two years on, the repository holds roughly 2,900 commits. The migration itself accounts for a small fraction of them. That ratio is the point. Six weeks of migration bought two years of work that could be versioned, checked, and automated.</p>
     </div></section>
 
     <section class="next"><div class="wrap">
