@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Case study: this portfolio was built by AI agents, shipped looking finished, and was measurably broken in seven ways. None were visible by looking.">
+  <meta name="author" content="Dragos Caravasile">
+  <meta name="theme-color" content="#f6f1e8">
+  <link rel="canonical" href="https://caradragos95.github.io/dragos-caravasile-portfolio/this-site/">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Dragos Caravasile">
+  <meta property="og:url" content="https://caradragos95.github.io/dragos-caravasile-portfolio/this-site/">
+  <meta property="og:title" content="This site shipped broken and looked fine">
+  <meta property="og:description" content="Built by AI agents. Seven defects reached the live site. None were visible by looking at it.">
+  <meta property="og:image" content="https://caradragos95.github.io/dragos-caravasile-portfolio/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="This site shipped broken and looked fine">
+  <meta name="twitter:description" content="Built by AI agents. Seven defects reached the live site. None were visible by looking at it.">
+  <meta name="twitter:image" content="https://caradragos95.github.io/dragos-caravasile-portfolio/og.png">
+  <title>This site shipped broken and looked fine — Dragos Caravasile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&amp;family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&amp;family=Instrument+Serif:ital@0;1&amp;display=swap" rel="stylesheet">
+  <style>
+    :root { --ink:#101018; --paper:#f6f1e8; --acid:#caff32; --orange:#ff5a38; --violet:#a693ff; --orange-ink:#b4341a; --muted:#53536a; --line:#101018; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; color:var(--ink); background-color:var(--paper); background-image:radial-gradient(#bdb6ac .7px, transparent .7px); background-size:10px 10px; font-family:"DM Sans", sans-serif; }
+    a { color:inherit; }
+    a:focus-visible { outline:3px solid var(--ink); outline-offset:4px; }
+    .wrap { width:min(1220px, calc(100% - 48px)); margin:0 auto; }
+    .measure { max-width:720px; margin-left:auto; margin-right:auto; }
+    nav { height:72px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line); background:var(--paper); font:500 12px "DM Mono", monospace; text-transform:uppercase; }
+    nav a { text-decoration:none; }
+    .brand i { display:inline-block; width:7px; height:7px; margin:0 7px 1px; border-radius:50%; background:var(--orange); }
+    .links { display:flex; gap:23px; color:var(--muted); }
+    .links a:hover { color:var(--ink); }
+    .hero { position:relative; overflow:hidden; padding:44px 0 52px; border-bottom:1px solid var(--line); }
+    .hero::after { content:"03"; position:absolute; top:-14px; right:-14px; color:rgba(16,16,24,.055); font:500 clamp(110px,20vw,300px)/1 "DM Mono",monospace; letter-spacing:-.12em; pointer-events:none; }
+    .eyebrow, .label { color:var(--muted); font:500 12px "DM Mono",monospace; letter-spacing:.025em; text-transform:uppercase; }
+    .eyebrow::before { content:"●"; margin-right:10px; color:var(--orange); }
+    h1, h2, h3, p { margin-top:0; }
+    h1 { position:relative; z-index:1; max-width:1000px; margin:29px 0 32px; font:500 clamp(44px,6vw,88px)/.92 "DM Mono",monospace; letter-spacing:-.09em; text-transform:uppercase; }
+    h1 em, h2 em { color:var(--orange); font-family:"Instrument Serif",serif; font-style:italic; font-weight:400; letter-spacing:-.055em; text-transform:none; }
+    .standfirst { position:relative; z-index:1; max-width:760px; margin:0; font-size:clamp(19px,2.1vw,27px); line-height:1.26; letter-spacing:-.03em; }
+    .meta-row { position:relative; z-index:1; display:flex; flex-wrap:wrap; gap:9px; margin-top:34px; }
+    .chip { padding:9px 11px; border:1px solid var(--line); background:var(--paper); font:500 12px "DM Mono",monospace; }
+    .chip:nth-child(2) { background:var(--acid); }
+    section { padding:76px 0; border-bottom:1px solid var(--line); }
+    h2 { margin:0 0 26px; font:500 clamp(29px,3.4vw,46px)/.98 "DM Mono",monospace; letter-spacing:-.075em; text-transform:uppercase; }
+    h3 { margin:36px 0 12px; font:500 19px/1.15 "DM Mono",monospace; letter-spacing:-.05em; text-transform:uppercase; }
+    p { font-size:17px; line-height:1.55; }
+    p + p { margin-top:19px; }
+    code { padding:2px 5px; background:#e6dfd3; font:500 14px "DM Mono",monospace; word-break:break-word; }
+    .dark { border-color:var(--ink); background-color:var(--ink); background-image:linear-gradient(90deg,rgba(202,255,50,.08) 1px,transparent 1px),linear-gradient(rgba(202,255,50,.08) 1px,transparent 1px); background-size:28px 28px; color:var(--paper); }
+    .dark .label { color:#bfc5bd; }
+    .dark h2 em { color:var(--acid); }
+    .dark code { background:rgba(202,255,50,.14); color:var(--acid); }
+    .defects { max-width:980px; margin:36px auto 0; border:1px solid var(--line); border-bottom:0; background:var(--paper); color:var(--ink); }
+    .defect { display:grid; grid-template-columns:26px 1fr 210px; gap:20px; align-items:baseline; padding:16px 20px; border-bottom:1px solid var(--line); }
+    .defect:nth-child(odd) { background:#ece5d9; }
+    .defect b { color:var(--orange-ink); font:500 12px "DM Mono",monospace; }
+    .defect span { font-size:15px; line-height:1.4; }
+    .defect i { font:500 13px "DM Mono",monospace; font-style:normal; color:var(--muted); }
+    .caption { max-width:980px; margin:12px auto 0; color:var(--muted); font:500 12px "DM Mono",monospace; text-transform:uppercase; }
+    .dark .caption { color:#bfc5bd; }
+    .snippet { margin:34px 0 0; padding:20px 22px; border:1px solid #6c716d; background:#07070b; color:#c3c8c1; font:400 13px/1.65 "DM Mono",monospace; white-space:pre; overflow-x:auto; }
+    .snippet .ok { color:var(--acid); }
+    .snippet .bad { color:#ff8a6e; }
+    .snippet .dim { color:#7d8280; }
+    .cost { display:grid; grid-template-columns:repeat(2,1fr); gap:13px; margin-top:34px; }
+    .cost div { padding:22px; border:1px solid var(--line); background:#e6dfd3; }
+    .cost div:first-child { background:var(--acid); }
+    .cost h3 { margin:0 0 10px; }
+    .cost p { margin:0; font-size:15px; line-height:1.45; }
+    .next { padding:70px 0; background-color:var(--acid); background-image:linear-gradient(45deg,transparent 45%,rgba(16,16,24,.13) 45%,rgba(16,16,24,.13) 55%,transparent 55%); background-size:20px 20px; border:0; }
+    .next h2 { max-width:760px; }
+    .button { display:inline-block; margin-top:8px; margin-right:14px; padding:15px 18px; background:var(--ink); color:var(--paper); text-decoration:none; box-shadow:6px 6px 0 var(--orange); font:500 13px "DM Mono",monospace; }
+    footer { padding:21px 0; background:var(--ink); color:#bfc5bd; font:500 11px "DM Mono",monospace; text-transform:uppercase; }
+    footer .wrap { display:flex; justify-content:space-between; gap:14px; }
+    footer a { color:inherit; text-decoration:none; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior:auto; }
+      *, *::before, *::after { transition-duration:.01ms !important; animation-duration:.01ms !important; animation-iteration-count:1 !important; }
+    }
+    @media (max-width:760px) {
+      .wrap { width:min(100% - 32px,1220px); }
+      .links a:not(:last-child) { display:none; }
+      h1 { font-size:clamp(34px,10.5vw,80px); overflow-wrap:break-word; }
+      section, .next { padding:56px 0; }
+      .defect { grid-template-columns:1fr; gap:6px; }
+      .cost { grid-template-columns:1fr; }
+      footer .wrap { flex-direction:column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap"><nav><a href="../" class="brand">Dragos<i></i>Caravasile</a><div class="links"><a href="../#work">Work</a><a href="../#samples">Samples</a><a href="../#contact">Contact</a><a href="../">← Back</a></div></nav></div>
+
+  <main>
+    <div class="wrap"><header class="hero">
+      <div class="eyebrow">Case study 03 · Verification</div>
+      <h1>This site shipped broken and <em>looked fine.</em></h1>
+      <p class="standfirst">Built by AI agents across two sessions. Seven defects reached the live site. Not one of them was visible by looking at the page.</p>
+      <div class="meta-row"><span class="chip">2026</span><span class="chip">Self-audit</span><span class="chip">WCAG</span><span class="chip">Playwright</span></div>
+    </header></div>
+
+    <section><div class="wrap measure">
+      <div class="label">01 / What was wrong</div>
+      <h2>Seven defects, none of them <em>visible.</em></h2>
+      <p>The first build of this page was produced by one agent and looked complete. It was published, shared, and read. A later measured audit found seven defects already live.</p>
+    </div>
+    <div class="wrap"><div class="defects">
+      <div class="defect"><b>01</b><span>Headline clipped on every phone, hidden by an <code>overflow:hidden</code> on its container</span><i>17px cut at 320px</i></div>
+      <div class="defect"><b>02</b><span>Whole page scrolled sideways, because grid items default to <code>min-width:auto</code></span><i>8px at 320px</i></div>
+      <div class="defect"><b>03</b><span>Two of five numerals invisible: orange on violet, and orange on the same orange</span><i>1.22:1 and 1:1</i></div>
+      <div class="defect"><b>04</b><span>Small labels below the accessible contrast floor on two backgrounds</span><i>2.34:1, needs 4.5:1</i></div>
+      <div class="defect"><b>05</b><span>Favicon requested from the domain root, not the site path</span><i>404 on every load</i></div>
+      <div class="defect"><b>06</b><span>No social card metadata, so every link shared to LinkedIn rendered as a bare grey box</span><i>the primary CTA</i></div>
+      <div class="defect"><b>07</b><span>No keyboard focus indicator anywhere, and no reduced-motion handling</span><i>unusable without a mouse</i></div>
+    </div>
+    <p class="caption">All seven were live. All seven pass a visual review.</p></div></section>
+
+    <section class="dark"><div class="wrap measure">
+      <div class="label">02 / Why nobody caught them</div>
+      <h2>Every one of them <em>reviews clean.</em></h2>
+      <p>A contrast ratio of 1.22:1 is not something an eye reports as an error. It reads as an empty corner, a design choice, a bit of negative space. Thirteen pixels of a clipped headline read as tight tracking. A missing social card is invisible until somebody else shares the link, at which point you are not watching.</p>
+      <p>These share one property, and it is the same property that makes documentation dangerous. They produce output that is confidently wrong and survives every review that consists of looking at it. The reviewer's agreement is not evidence, because the reviewer is running the same faulty check as the author.</p>
+      <p>The parallel is exact. A config value transcribed from source code looks right, reads right, and does nothing. A page whose numerals sit at 1:1 against their background looks designed. Neither error announces itself, so neither can be caught by attention. Only by measurement.</p>
+    </div></section>
+
+    <section><div class="wrap measure">
+      <div class="label">03 / What actually found them</div>
+      <h2>Compare the rendered page against a <em>number.</em></h2>
+      <p>Every defect above was found the same way: render the page in a real browser, extract a value from the live DOM, and compare it against a threshold that does not depend on judgement.</p>
+      <p>Layout defects came from comparing content width against container width at fifteen viewport sizes from 320px to 1920px. Contrast defects came from computing WCAG ratios on the resolved colours rather than on the palette as designed, which is what exposed the numerals: the palette was fine, the inheritance was not.</p>
+      <div class="snippet"><span class="dim">// the check that found defect 01</span>
+h1.scrollWidth        <span class="bad">371</span>
+h1.getBoundingClientRect().width  <span class="bad">358</span>
+                      <span class="bad">^ 13px of headline, clipped and silent</span>
+
+<span class="dim">// the check that found defect 03</span>
+contrast(<span class="dim">computed</span> color, <span class="dim">computed</span> background)
+  numeral 02   <span class="bad">1.22:1</span>
+  numeral 04   <span class="bad">1.00:1</span>   <span class="dim">orange on orange</span>
+  <span class="dim">after fix</span>    <span class="ok">16.10:1</span></div>
+      <p class="caption">Two of the seven checks. Neither requires an opinion.</p>
+    </div></section>
+
+    <section><div class="wrap measure">
+      <div class="label">04 / The part worth admitting</div>
+      <h2>The fix pass had the <em>same</em> failure mode.</h2>
+      <p>A second agent audited the first agent's work and fixed all seven. While doing so it introduced an eighth defect of exactly the same kind: a row of figures placed inside a dark section, inheriting light text, on a light background it had set itself. The first value rendered invisible. Paper on paper.</p>
+      <p>It was caught before merge, by the same contrast check that found the original two. That is the only reason it is an anecdote rather than a defect.</p>
+      <p>The same thing happened in the writing. Three thousand words of case studies came back containing seven instances of a sentence construction that this project's own style guide bans in its opening lines. Fluent, consistent, confidently wrong, and invisible until the text was read as a whole against the rule rather than sentence by sentence.</p>
+      <p>Two agents, two sessions, one failure mode. Generated work is plausible by construction. That is its purpose and its defect, and it does not improve by being reviewed harder by someone reading it.</p>
+    </div></section>
+
+    <section><div class="wrap measure">
+      <div class="label">05 / What it means for the work</div>
+      <h2>Trade-offs.</h2>
+      <div class="cost">
+        <div><h3>What AI was good at</h3><p>A complete, distinctive, responsive site from nothing. The design holds up. The structure is sound. Every defect above is a detail, and none of them is the hard part of making a page.</p></div>
+        <div><h3>What it could not do</h3><p>Know what it got wrong. Nothing in generated output signals its own confidence, so the only durable answer is a check that returns a number and a threshold that is not up for debate.</p></div>
+      </div>
+      <p style="margin-top:34px">Which is the same conclusion the documentation work reached, arrived at from the other direction. Verify against something computable, encode the rule once the failure has happened, and never accept fluency as evidence. This page is the argument tested on its own author.</p>
+    </div></section>
+
+    <section class="next"><div class="wrap">
+      <div class="label">Next</div>
+      <h2>The same argument, applied to <em>documentation.</em></h2>
+      <p style="max-width:560px">Case study 02 covers the quality gate built on the same principle: six rules that run inside the authoring loop, each one encoding a failure that already reached a page.</p>
+      <a class="button" href="../pipeline/">Read case study 02 →</a>
+      <a class="button" href="../">Back to the portfolio</a>
+    </div></section>
+  </main>
+
+  <footer><div class="wrap"><span>© 2026 Dragos Caravasile</span><span><a href="../">Portfolio</a> / Case study 03</span></div></footer>
+</body>
+</html>
