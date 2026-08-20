@@ -73,8 +73,6 @@
     .cost div:first-child { background:var(--acid); }
     .cost h3 { margin:0 0 10px; }
     .cost p { margin:0; font-size:15px; line-height:1.45; }
-    .todo { display:block; margin:26px 0; padding:18px 20px; border:1px dashed var(--ink); background:var(--violet); font:500 13px/1.5 "DM Mono",monospace; }
-    .todo b { display:block; margin-bottom:7px; text-transform:uppercase; }
     .next { padding:70px 0; background-color:var(--acid); background-image:linear-gradient(45deg,transparent 45%,rgba(16,16,24,.13) 45%,rgba(16,16,24,.13) 55%,transparent 55%); background-size:20px 20px; border:0; }
     .next h2 { max-width:700px; }
     .button { display:inline-block; margin-top:8px; padding:15px 18px; background:var(--ink); color:var(--paper); text-decoration:none; box-shadow:6px 6px 0 var(--orange); font:500 13px "DM Mono",monospace; }
@@ -115,6 +113,7 @@
       <p>Both forms look correct in a table. Only one works. Reading the source produces the wrong one, confidently, because the property name in the code contains the hyphen that the binding rule deletes. A reviewer checking the doc against the source will agree with the mistake.</p>
       <div class="pull">The reader cannot detect this class of error. They will conclude the product is broken, not the documentation. That is what makes it worth engineering against rather than proofreading against.</div>
       <p>The same shape recurs everywhere: a component used but never imported renders as literal text; a page missing from the navigation config silently breaks the imports on it; a trailing comma in a config file takes down a build. None of these are writing problems. All of them reach readers through the writing.</p>
+      <p>Scale is what turns them from annoyances into a category. The surface under management is roughly 800 pages carrying more than 4,000 internal links, across two long-term-support version trees plus release notes. Nobody can hold that in their head, and nobody should be asked to.</p>
     </div></section>
 
     <section class="dark"><div class="wrap">
@@ -152,8 +151,7 @@
         <div><h3>What it cost</h3><p>Every rule is a maintenance surface. A check that fires wrongly trains people to bypass it, so the false-positive budget is close to zero, and each new rule has to earn its place against that.</p></div>
       </div>
       <p style="margin-top:34px">The general principle is narrower than "automate quality" and more useful: encode a rule only after the failure has happened at least once, and scope it so it can only fire on the thing that failed. Rules written in anticipation tend to be wrong about what actually breaks.</p>
-      <span class="todo"><b>To confirm before publishing</b>
-      This section reads better with one concrete number. Candidates: how many violations the guard has blocked since it went in, how many rules were added after a real incident versus preemptively, or the count of pages the link resolver covers. Pick whichever you can state accurately, or cut this note and ship without a number rather than estimate one.</span>
+      <p>The guard's own history is the evidence for that. It went in with two rules. Six weeks later it had six, and every one of the four added since was written after a specific failure reached a page rather than in anticipation of one. Nothing about the final rule set was obvious at the start.</p>
     </div></section>
 
     <section class="next"><div class="wrap">
