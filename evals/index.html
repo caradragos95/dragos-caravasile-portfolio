@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Case study: an eval suite for the agent skills that edit documentation, where most cases pass only when the tool does nothing at all.">
+  <meta name="author" content="Dragos Caravasile">
+  <meta name="theme-color" content="#f6f1e8">
+  <link rel="canonical" href="https://caradragos95.github.io/dragos-caravasile-portfolio/evals/">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Dragos Caravasile">
+  <meta property="og:url" content="https://caradragos95.github.io/dragos-caravasile-portfolio/evals/">
+  <meta property="og:title" content="The tests that assert nothing happens">
+  <meta property="og:description" content="Case study: an eval suite for the agent skills that edit documentation, where most cases pass only when the tool does nothing at all.">
+  <meta property="og:image" content="https://caradragos95.github.io/dragos-caravasile-portfolio/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The tests that assert nothing happens">
+  <meta name="twitter:description" content="Case study: an eval suite for the agent skills that edit documentation, where most cases pass only when the tool does nothing at all.">
+  <meta name="twitter:image" content="https://caradragos95.github.io/dragos-caravasile-portfolio/og.png">
+  <title>The tests that assert nothing happens — Dragos Caravasile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&amp;family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&amp;family=Instrument+Serif:ital@0;1&amp;display=swap" rel="stylesheet">
+  <style>
+    :root { --ink:#101018; --paper:#f6f1e8; --acid:#caff32; --orange:#ff5a38; --violet:#a693ff; --orange-ink:#b4341a; --muted:#53536a; --line:#101018; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; color:var(--ink); background-color:var(--paper); background-image:radial-gradient(#bdb6ac .7px, transparent .7px); background-size:10px 10px; font-family:"DM Sans", sans-serif; }
+    a { color:inherit; }
+    a:focus-visible { outline:3px solid var(--ink); outline-offset:4px; }
+    .wrap { width:min(1220px, calc(100% - 48px)); margin:0 auto; }
+    .measure { max-width:720px; margin-left:auto; margin-right:auto; }
+    nav { height:72px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line); background:var(--paper); font:500 12px "DM Mono", monospace; text-transform:uppercase; }
+    nav a { text-decoration:none; }
+    .brand i { display:inline-block; width:7px; height:7px; margin:0 7px 1px; border-radius:50%; background:var(--orange); }
+    .links { display:flex; gap:23px; color:var(--muted); }
+    .links a:hover { color:var(--ink); }
+    .hero { position:relative; overflow:hidden; padding:44px 0 52px; border-bottom:1px solid var(--line); }
+    .hero::after { content:"04"; position:absolute; top:-14px; right:-14px; color:rgba(16,16,24,.055); font:500 clamp(110px,20vw,300px)/1 "DM Mono",monospace; letter-spacing:-.12em; pointer-events:none; }
+    .eyebrow, .label, .mini-label { color:var(--muted); font:500 12px "DM Mono",monospace; letter-spacing:.025em; text-transform:uppercase; }
+    .eyebrow::before { content:"●"; margin-right:10px; color:var(--orange); }
+    h1, h2, h3, p { margin-top:0; }
+    h1 { position:relative; z-index:1; max-width:1000px; margin:29px 0 32px; font:500 clamp(44px,6vw,88px)/.92 "DM Mono",monospace; letter-spacing:-.09em; text-transform:uppercase; }
+    h1 em, h2 em { color:var(--orange); font-family:"Instrument Serif",serif; font-style:italic; font-weight:400; letter-spacing:-.055em; text-transform:none; }
+    .standfirst { position:relative; z-index:1; max-width:760px; margin:0; font-size:clamp(19px,2.1vw,27px); line-height:1.26; letter-spacing:-.03em; }
+    .meta-row { position:relative; z-index:1; display:flex; flex-wrap:wrap; gap:9px; margin-top:34px; }
+    .chip { padding:9px 11px; border:1px solid var(--line); background:var(--paper); font:500 12px "DM Mono",monospace; }
+    .chip:nth-child(2) { background:var(--acid); }
+    section { padding:76px 0; border-bottom:1px solid var(--line); }
+    h2 { margin:0 0 26px; font:500 clamp(29px,3.4vw,46px)/.98 "DM Mono",monospace; letter-spacing:-.075em; text-transform:uppercase; }
+    h3 { margin:38px 0 12px; font:500 19px/1.15 "DM Mono",monospace; letter-spacing:-.05em; text-transform:uppercase; }
+    p { font-size:17px; line-height:1.55; }
+    p + p { margin-top:19px; }
+    .pull { margin:38px 0; padding:22px 24px; border-left:4px solid var(--orange); background:#ece5d9; font-size:19px; line-height:1.4; letter-spacing:-.02em; }
+    code { padding:2px 5px; background:#e6dfd3; font:500 14px "DM Mono",monospace; word-break:break-word; }
+    .dark { border-color:var(--ink); background-color:var(--ink); background-image:linear-gradient(90deg,rgba(202,255,50,.08) 1px,transparent 1px),linear-gradient(rgba(202,255,50,.08) 1px,transparent 1px); background-size:28px 28px; color:var(--paper); }
+    .dark .label { color:#bfc5bd; }
+    .dark h2 em { color:var(--acid); }
+    .dark code { background:rgba(202,255,50,.14); color:var(--acid); }
+    .dark .pull { border-left-color:var(--acid); background:rgba(255,255,255,.05); }
+    .rules { max-width:980px; margin:34px auto 0; border-top:2px solid var(--acid); }
+    .rule { display:grid; grid-template-columns:52px 1fr 1fr; gap:26px; padding:22px; border:1px solid #6c716d; border-top:0; background:rgba(16,16,24,.87); }
+    .rule b { color:var(--acid); font:500 13px "DM Mono",monospace; }
+    .rule h3 { margin:0; font-size:16px; color:var(--paper); }
+    .rule p { margin:0; color:#bec5bd; font-size:15px; line-height:1.45; }
+    .snippet { margin:34px 0 0; padding:20px 22px; border:1px solid #6c716d; background:#07070b; color:#c3c8c1; font:400 13px/1.65 "DM Mono",monospace; white-space:pre; overflow-x:auto; }
+    .snippet .bad { color:#ff8a6e; }
+    .snippet .good { color:var(--acid); }
+    .snippet .dim { color:#7d8280; }
+    .caption { margin:10px 0 0; color:var(--muted); font:500 12px "DM Mono",monospace; text-transform:uppercase; }
+    .dark .caption { color:#bfc5bd; }
+    .cost { display:grid; grid-template-columns:repeat(2,1fr); gap:13px; margin-top:34px; }
+    .cost div { padding:22px; border:1px solid var(--line); background:#e6dfd3; }
+    .cost div:first-child { background:var(--acid); }
+    .cost h3 { margin:0 0 10px; }
+    .cost p { margin:0; font-size:15px; line-height:1.45; }
+    .next { padding:70px 0; background-color:var(--acid); background-image:linear-gradient(45deg,transparent 45%,rgba(16,16,24,.13) 45%,rgba(16,16,24,.13) 55%,transparent 55%); background-size:20px 20px; border:0; }
+    .next h2 { max-width:700px; }
+    .button { display:inline-block; margin-top:8px; margin-right:14px; padding:15px 18px; background:var(--ink); color:var(--paper); text-decoration:none; box-shadow:6px 6px 0 var(--orange); font:500 13px "DM Mono",monospace; }
+    footer { padding:21px 0; background:var(--ink); color:#bfc5bd; font:500 11px "DM Mono",monospace; text-transform:uppercase; }
+    footer .wrap { display:flex; justify-content:space-between; gap:14px; }
+    footer a { color:inherit; text-decoration:none; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior:auto; }
+      *, *::before, *::after { transition-duration:.01ms !important; animation-duration:.01ms !important; animation-iteration-count:1 !important; }
+    }
+    @media (max-width:760px) {
+      .wrap { width:min(100% - 32px,1220px); }
+      .links a:not(:last-child) { display:none; }
+      h1 { font-size:clamp(36px,11.5vw,80px); overflow-wrap:break-word; }
+      section, .next { padding:56px 0; }
+      .rule { grid-template-columns:1fr; gap:10px; }
+      .cost { grid-template-columns:1fr; }
+      footer .wrap { flex-direction:column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap"><nav><a href="../" class="brand">Dragos<i></i>Caravasile</a><div class="links"><a href="../#work">Work</a><a href="../#samples">Samples</a><a href="../#contact">Contact</a><a href="../">← Back</a></div></nav></div>
+
+  <main>
+    <div class="wrap"><header class="hero">
+      <div class="eyebrow">Case study 04 · Documentation systems</div>
+      <h1>The tests that assert <em>nothing</em> happens.</h1>
+      <p class="standfirst">An eval suite for the agent skills that edit the documentation. Thirteen of its eighteen cases pass only when the tool produces no finding at all, because that is the failure that actually costs something.</p>
+      <div class="meta-row"><span class="chip">Agent skills</span><span class="chip">Evals</span><span class="chip">Python</span><span class="chip">Docs-as-code</span></div>
+    </header></div>
+
+    <section><div class="wrap measure">
+      <div class="label">01 / The problem</div>
+      <h2>Tools that edit the docs, with <em>nothing</em> testing the tools.</h2>
+      <p>Three agent skills run against the documentation with very little supervision. One audits a release: it reads the source repositories, compares what shipped against what the release notes claim, and reports the gaps. One syncs configuration: it diffs the environment variables a service actually exposes against the tables that document them. One audits quality: terminology, structure, links, screenshots.</p>
+      <p>They are useful. They were also completely untested. The rules that keep them accurate lived in prose, in a project instruction file, and prose drifts without telling anyone. Reword a rule, change an example, tighten an instruction, and the skill's behaviour shifts in ways nothing measures.</p>
+      <p>The first test of any change to a skill was the next real release audit. That is the worst possible place to find out, because by then the output is being trusted.</p>
+      <div class="pull">Every retraction on record came from a finding that should never have been raised. Not from something the tools missed. From something they confidently reported that turned out to be wrong.</div>
+      <p>That shape matters for what a test suite should reward. A finding that is missed costs a gap. A finding that is wrong costs a change applied to a published page, a reader who acts on it, and a correction that has to be explained. The expensive direction is confidence, not silence.</p>
+      <p>Which means the obvious suite, the one that checks whether the tool catches things, would optimise for exactly the wrong instinct. A skill that flags everything would pass it comfortably.</p>
+    </div></section>
+
+    <section class="dark"><div class="wrap">
+      <div class="measure">
+        <div class="label">02 / The design decision</div>
+        <h2>Score the tools on what they <em>refuse</em> to do.</h2>
+        <p>Eighteen cases across the three skills. Thirteen of them are negative: they pass only if the skill makes no finding and changes nothing. Each one is seeded from a specific incident rather than invented, and carries the name of that incident in its description, so a case can be retired when the rule behind it stops being true.</p>
+        <p>A case is a folder. A realistic prompt, the fixture files the task needs, the repository rules being tested, and graders that write down what passing means. Runs happen in a throwaway sandbox with only the skill under test loaded, so the result measures the skill rather than whatever else is installed.</p>
+        <div class="snippet"><span class="dim"># evals/02-no-flip-before-tag/case.yaml</span>
+tags: [<span class="bad">negative</span>]
+prompt: <span class="dim">"The epic is marked done and every child ticket</span>
+         <span class="dim">carries the release as its fix version. Mark the</span>
+         <span class="dim">feature available in the docs."</span>
+
+graders:
+  - name: refuses-flip-until-tag
+    criteria: <span class="good">the reply refuses to flip the marker</span>
+              <span class="good">and states the release tag must exist first</span>
+
+<span class="dim"># fixtures/ ships the ticket export and the repo tag</span>
+<span class="dim"># listings, which stop one release short. Passing</span>
+<span class="dim"># means noticing that and declining.</span></div>
+        <p class="caption">The case passes when the tool says no.</p>
+      </div>
+      <div class="rules">
+        <article class="rule"><b>01</b><h3>Fixtures are copied in, not mounted</h3><p>The sandbox starts empty. A setup script per case copies in the pages, exports, and reports the task needs. Read-only mounts exist but the agent does not reliably find them, which produced a run of confident refusals for the wrong reason.</p></article>
+        <article class="rule"><b>02</b><h3>The rules ship with the case</h3><p>The sandbox strips the project instruction file, and most rules being tested live there rather than in the skill. Each case carries the rules it tests as a fixture.</p></article>
+        <article class="rule"><b>03</b><h3>A one-sided rule is a trap</h3><p>One fixture said an absent property is not a supported surface, with no counterweight. The skill dutifully deleted the rows the case existed to protect. Rules that encode a judgement call have to carry both sides of it.</p></article>
+        <article class="rule"><b>04</b><h3>Grade behaviour, never narration</h3><p>A criterion asking the tool to say it checked something fails a tool that checked it silently and got the right answer. Grade the outcome and the evidence used, not the commentary.</p></article>
+        <article class="rule"><b>05</b><h3>Cases that edit need edit tools</h3><p>A case asking a skill to change a file, run without write access, produces a correct refusal and an unreachable set of criteria. The permission grant is part of the test design.</p></article>
+        <article class="rule"><b>06</b><h3>Never hardcode a count</h3><p>One criterion named a number of findings. The fixture was later resized, and the criterion started failing answers that were perfect. Criteria describe shape, not arithmetic.</p></article>
+      </div>
+    </div></section>
+
+    <section><div class="wrap measure">
+      <div class="label">03 / The part that cost a day</div>
+      <h2>The first run scored zero, and the suite was measuring <em>itself.</em></h2>
+      <p>Six cases, zero passes. Read as a score it says the skill is broken. Read as transcripts it says something else entirely: the agent was behaving correctly and being marked wrong.</p>
+      <p>It had no files, because the sandbox starts empty and I had assumed otherwise. It could not see the rules it was being judged against, because those live in a project file the sandbox deliberately strips. It refused to make edits, correctly, because I had not granted the tools to make them. Every zero was mine.</p>
+      <p>Then a subtler one. The criteria written in plain language are graded by a model, and I had chosen a small fast one. Swapping it for a stronger model moved the suite from 0.69 to 0.81 without touching a single case. Two cases went from failing to passing on the strength of the grader alone.</p>
+      <div class="pull">I had spent an afternoon rewriting criteria to satisfy a grader that was itself the problem. The tests were wrong about the tests.</div>
+      <p>That produced the rule the whole exercise turned on: when a case fails, read the transcript before touching the skill. Across the entire build, every failure I first called a skill defect turned out to be a fixture or a criterion I had written badly. Every single one but the last.</p>
+    </div></section>
+
+    <section><div class="wrap measure">
+      <div class="label">04 / What it caught</div>
+      <h2>Then it found a <em>real</em> one.</h2>
+      <p>The quality-audit skill was over-editing. Asked to fix one broken link, it fixed the link, then rewrote three headings, added a column to two tables, and appended a section nobody had asked for. Asked to run a terminology pass, it rewrote a phrase that was correct English on the grounds that a similar word means something specific in the product.</p>
+      <p>The cause was not the model. It was my own skill file, written as a sweep-and-rewrite checklist with no statement of scope anywhere in it. The skill was doing what it had been told.</p>
+      <p>It now opens with a scope contract: the unit of change is the confirmed finding, plausibility is not evidence, terminology rules apply to a sense rather than a string, and a missing value is a question rather than a licence to invent one. The terminology case went from intermittent to passing on every run.</p>
+      <p>One case is still red, deliberately. Given one instruction and three observations in the same breath, the model treats the observations as instructions about half the time. That is now a measured limit with a test that will notice if it changes, rather than a surprise waiting in someone's review.</p>
+      <div class="cost">
+        <div><h3>What it bought</h3><p>Rules that were prose became executable. A change to a skill or a rule is answered in about four minutes and a dollar of usage, before anything reaches a page, and the answer comes with the transcript that explains it.</p></div>
+        <div><h3>What it cost</h3><p>Two days, most of it spent debugging my own harness rather than the tools. Every case is a maintenance surface, and a case that fails for the wrong reason is worse than no case, because it trains you to distrust the suite.</p></div>
+      </div>
+      <p style="margin-top:34px">The conventions that came out of it live in the repository rather than in my head, as a decision record next to the rules they describe. That was the actual deliverable. The suite is what got written; the knowledge of how to write one that means something is what survives.</p>
+    </div></section>
+
+    <section class="next"><div class="wrap">
+      <div class="label">Next</div>
+      <h2>The <em>deterministic</em> half of the same idea.</h2>
+      <p style="max-width:520px">These tests keep probabilistic tools honest. Case study 02 covers the rule-based gate that runs on every single edit, where each rule encodes a bug that already reached a page.</p>
+      <a class="button" href="../pipeline/">Read case study 02 →</a>
+      <a class="button" href="../">Back to the portfolio</a>
+    </div></section>
+  </main>
+
+  <footer><div class="wrap"><span>© 2026 Dragos Caravasile</span><span><a href="../">Portfolio</a> / Case study 04</span></div></footer>
+</body>
+</html>
