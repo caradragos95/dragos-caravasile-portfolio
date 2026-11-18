@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Case study: documenting two LTS lines, monthly SaaS releases and a new major, where availability comes from git ancestry, never from a ticket.">
+  <meta name="author" content="Dragos Caravasile">
+  <meta name="theme-color" content="#f6f1e8">
+  <link rel="canonical" href="https://caradragos95.github.io/dragos-caravasile-portfolio/release/">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Dragos Caravasile">
+  <meta property="og:url" content="https://caradragos95.github.io/dragos-caravasile-portfolio/release/">
+  <meta property="og:title" content="Shipped means it is in the tag">
+  <meta property="og:description" content="Case study: documenting two LTS lines, monthly SaaS releases and a new major, where availability comes from git ancestry, never from a ticket.">
+  <meta property="og:image" content="https://caradragos95.github.io/dragos-caravasile-portfolio/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Shipped means it is in the tag">
+  <meta name="twitter:description" content="Case study: documenting two LTS lines, monthly SaaS releases and a new major, where availability comes from git ancestry, never from a ticket.">
+  <meta name="twitter:image" content="https://caradragos95.github.io/dragos-caravasile-portfolio/og.png">
+  <title>Shipped means it is in the tag — Dragos Caravasile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&amp;family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&amp;family=Instrument+Serif:ital@0;1&amp;display=swap" rel="stylesheet">
+  <style>
+    :root { --ink:#101018; --paper:#f6f1e8; --acid:#caff32; --orange:#ff5a38; --violet:#a693ff; --orange-ink:#b4341a; --muted:#53536a; --line:#101018; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; color:var(--ink); background-color:var(--paper); background-image:radial-gradient(#bdb6ac .7px, transparent .7px); background-size:10px 10px; font-family:"DM Sans", sans-serif; }
+    a { color:inherit; }
+    a:focus-visible { outline:3px solid var(--ink); outline-offset:4px; }
+    .wrap { width:min(1220px, calc(100% - 48px)); margin:0 auto; }
+    .measure { max-width:720px; margin-left:auto; margin-right:auto; }
+    nav { height:72px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line); background:var(--paper); font:500 12px "DM Mono", monospace; text-transform:uppercase; }
+    nav a { text-decoration:none; }
+    .brand i { display:inline-block; width:7px; height:7px; margin:0 7px 1px; border-radius:50%; background:var(--orange); }
+    .links { display:flex; gap:23px; color:var(--muted); }
+    .links a:hover { color:var(--ink); }
+    .hero { position:relative; overflow:hidden; padding:44px 0 52px; border-bottom:1px solid var(--line); }
+    .hero::after { content:"03"; position:absolute; top:-14px; right:-14px; color:rgba(16,16,24,.055); font:500 clamp(110px,20vw,300px)/1 "DM Mono",monospace; letter-spacing:-.12em; pointer-events:none; }
+    .eyebrow, .label, .mini-label { color:var(--muted); font:500 12px "DM Mono",monospace; letter-spacing:.025em; text-transform:uppercase; }
+    .eyebrow::before { content:"●"; margin-right:10px; color:var(--orange); }
+    h1, h2, h3, p { margin-top:0; }
+    h1 { position:relative; z-index:1; max-width:1000px; margin:29px 0 32px; font:500 clamp(44px,6vw,88px)/.92 "DM Mono",monospace; letter-spacing:-.09em; text-transform:uppercase; }
+    h1 em, h2 em { color:var(--orange); font-family:"Instrument Serif",serif; font-style:italic; font-weight:400; letter-spacing:-.055em; text-transform:none; }
+    .standfirst { position:relative; z-index:1; max-width:760px; margin:0; font-size:clamp(19px,2.1vw,27px); line-height:1.26; letter-spacing:-.03em; }
+    .meta-row { position:relative; z-index:1; display:flex; flex-wrap:wrap; gap:9px; margin-top:34px; }
+    .chip { padding:9px 11px; border:1px solid var(--line); background:var(--paper); font:500 12px "DM Mono",monospace; }
+    .chip:nth-child(2) { background:var(--acid); }
+    section { padding:76px 0; border-bottom:1px solid var(--line); }
+    h2 { margin:0 0 26px; font:500 clamp(29px,3.4vw,46px)/.98 "DM Mono",monospace; letter-spacing:-.075em; text-transform:uppercase; }
+    h3 { margin:38px 0 12px; font:500 19px/1.15 "DM Mono",monospace; letter-spacing:-.05em; text-transform:uppercase; }
+    p { font-size:17px; line-height:1.55; }
+    p + p { margin-top:19px; }
+    .pull { margin:38px 0; padding:22px 24px; border-left:4px solid var(--orange); background:#ece5d9; font-size:19px; line-height:1.4; letter-spacing:-.02em; }
+    code { padding:2px 5px; background:#e6dfd3; font:500 14px "DM Mono",monospace; word-break:break-word; }
+    .dark { border-color:var(--ink); background-color:var(--ink); background-image:linear-gradient(90deg,rgba(202,255,50,.08) 1px,transparent 1px),linear-gradient(rgba(202,255,50,.08) 1px,transparent 1px); background-size:28px 28px; color:var(--paper); }
+    .dark .label { color:#bfc5bd; }
+    .dark h2 em { color:var(--acid); }
+    .dark code { background:rgba(202,255,50,.14); color:var(--acid); }
+    .dark .pull { border-left-color:var(--acid); background:rgba(255,255,255,.05); }
+    .rules { max-width:980px; margin:34px auto 0; border-top:2px solid var(--acid); }
+    .rule { display:grid; grid-template-columns:52px 1fr 1fr; gap:26px; padding:22px; border:1px solid #6c716d; border-top:0; background:rgba(16,16,24,.87); }
+    .rule b { color:var(--acid); font:500 13px "DM Mono",monospace; }
+    .rule h3 { margin:0; font-size:16px; color:var(--paper); }
+    .rule p { margin:0; color:#bec5bd; font-size:15px; line-height:1.45; }
+    .snippet { margin:34px 0 0; padding:20px 22px; border:1px solid #6c716d; background:#07070b; color:#c3c8c1; font:400 13px/1.65 "DM Mono",monospace; white-space:pre; overflow-x:auto; }
+    .snippet .bad { color:#ff8a6e; }
+    .snippet .good { color:var(--acid); }
+    .snippet .dim { color:#7d8280; }
+    .caption { margin:10px 0 0; color:var(--muted); font:500 12px "DM Mono",monospace; text-transform:uppercase; }
+    .dark .caption { color:#bfc5bd; }
+    .cost { display:grid; grid-template-columns:repeat(2,1fr); gap:13px; margin-top:34px; }
+    .cost div { padding:22px; border:1px solid var(--line); background:#e6dfd3; }
+    .cost div:first-child { background:var(--acid); }
+    .cost h3 { margin:0 0 10px; }
+    .cost p { margin:0; font-size:15px; line-height:1.45; }
+    .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:13px; margin-top:38px; }
+    .stats div { padding:20px 22px; border:1px solid var(--line); background:#e6dfd3; }
+    .stats div:nth-child(2) { background:var(--acid); }
+    .stats b { display:block; margin-bottom:9px; font:500 33px/1 "DM Mono",monospace; letter-spacing:-.07em; }
+    .stats span { color:var(--muted); font-size:14px; line-height:1.4; }
+    .stats div:nth-child(2) span { color:var(--ink); }
+    .next { padding:70px 0; background-color:var(--acid); background-image:linear-gradient(45deg,transparent 45%,rgba(16,16,24,.13) 45%,rgba(16,16,24,.13) 55%,transparent 55%); background-size:20px 20px; border:0; }
+    .next h2 { max-width:700px; }
+    .button { display:inline-block; margin-top:8px; margin-right:14px; padding:15px 18px; background:var(--ink); color:var(--paper); text-decoration:none; box-shadow:6px 6px 0 var(--orange); font:500 13px "DM Mono",monospace; }
+    footer { padding:21px 0; background:var(--ink); color:#bfc5bd; font:500 11px "DM Mono",monospace; text-transform:uppercase; }
+    footer .wrap { display:flex; justify-content:space-between; gap:14px; }
+    footer a { color:inherit; text-decoration:none; }
+    .frame { position:relative; height:clamp(460px,58vw,720px); margin-top:34px; border:1px solid var(--line); overflow:hidden; background:#07070b; }
+    .frame iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+    .gallery { display:flex; flex-wrap:wrap; gap:9px; margin-top:22px; }
+    .gallery a { padding:9px 11px; border:1px solid var(--line); background:var(--paper); text-decoration:none; font:500 12px "DM Mono",monospace; }
+    .gallery a:hover { background:var(--acid); }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior:auto; }
+      *, *::before, *::after { transition-duration:.01ms !important; animation-duration:.01ms !important; animation-iteration-count:1 !important; }
+    }
+    @media (max-width:760px) {
+      .wrap { width:min(100% - 32px,1220px); }
+      .links a:not(:last-child) { display:none; }
+      h1 { font-size:clamp(36px,11.5vw,80px); overflow-wrap:break-word; }
+      section, .next { padding:56px 0; }
+      .rule { grid-template-columns:1fr; gap:10px; }
+      .cost, .stats { grid-template-columns:1fr; }
+      footer .wrap { flex-direction:column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap"><nav><a href="../" class="brand">Dragos<i></i>Caravasile</a><div class="links"><a href="../#work">Work</a><a href="../#samples">Samples</a><a href="../#contact">Contact</a><a href="../">← Back</a></div></nav></div>
+
+  <main>
+    <div class="wrap"><header class="hero">
+      <div class="eyebrow">Case study 03 · Release management</div>
+      <h1>Shipped means it is <em>in the tag.</em></h1>
+      <p class="standfirst">Documentation for a platform with two long-term-support lines, a monthly feature release on SaaS, and a new major version that opened its own tree early. Every page has to answer one question correctly: is this available in my version? The answer comes from git, never from a ticket.</p>
+      <div class="meta-row"><span class="chip">Release management</span><span class="chip">Versioning</span><span class="chip">Git</span><span class="chip">Python</span></div>
+    </header></div>
+
+    <section><div class="wrap measure">
+      <div class="label">01 / The problem</div>
+      <h2>Four sources of truth, each wrong in its <em>own</em> way.</h2>
+      <p>The release model has three moving parts. Long-term-support families get their own documentation tree, and self-hosted customers stay on one for months. Monthly feature releases go live on SaaS first and reach self-hosted installs only with the next LTS family. A new major version opened its own tree before its LTS existed, so for a while one change could belong in two trees with two different labels.</p>
+      <p>The obvious places to ask "did this ship?" all lie, just differently. A ticket's fix version lags, sits empty, or names a future release while the code is already out. Merged to main is not shipped, because reverts happen. An epic can sit in the backlog while every child is done. A feature that spans two repositories is available only where both halves shipped, and they don't always ship together.</p>
+      <div class="pull">Two of the errors on record were early, not late: two features marked available a day before a release was cut, on the strength of an expected sync and a product manager's word. Neither made that release.</div>
+      <p>A missing availability note costs a reader a question. A wrong one costs a self-hosted team an upgrade plan built around something that isn't there. So the system is built to be slow to say yes.</p>
+      <div class="stats">
+        <div><b>3</b><span>documentation trees live at once, one per supported release family</span></div>
+        <div><b>75</b><span>pages in the current LTS tree carrying a per-release SaaS availability badge</span></div>
+        <div><b>10</b><span>hard rules in the routing playbook, each tied to a failure that already happened</span></div>
+      </div>
+    </div></section>
+
+    <section class="dark"><div class="wrap">
+      <div class="measure">
+        <div class="label">02 / The design decision</div>
+        <h2>Gate on the <em>tag,</em> then route.</h2>
+        <p>Every change goes through a release gate before it reaches a page. The gate resolves a ticket to its commits, then asks git a yes-or-no question for each shipped release: is this commit an ancestor of the tag that release pinned? The pinned tags come from the component tables in the published deployment guidelines, so the documentation is its own release manifest.</p>
+        <div class="snippet"><span class="dim"># release-gate.py, the mechanism</span>
+ticket  -> commits     <span class="dim">git log --grep, then a PR search</span>
+commit  -> releases    <span class="good">git merge-base --is-ancestor &lt;sha&gt; &lt;pinned-tag&gt;</span>
+tags    &lt;- the component tables in shipped deployment guidelines
+
+<span class="dim"># never used as the gate</span>
+<span class="bad">fix version</span>     <span class="dim">a target label, quoted only for parked items</span>
+<span class="bad">merged to main</span>  <span class="dim">reverts happen</span>
+<span class="bad">epic status</span>     <span class="dim">the children carry the truth</span></div>
+        <p class="caption">Topology, not version math.</p>
+        <p style="margin-top:34px">The verdict then picks the tree, the marker and the release notes from one routing table. Before adopting the table I backtested it against every labeled change of 2026 up to that point, and every one routed correctly.</p>
+      </div>
+      <div class="rules">
+        <article class="rule"><b>01</b><h3>Shipped in an LTS patch</h3><p>Documented in that family's tree with a plain "available starting with" callout, plus a line in that patch's release notes and deployment guidelines.</p></article>
+        <article class="rule"><b>02</b><h3>Shipped only in a feature release</h3><p>Documented in the current LTS tree with that release's SaaS badge. The page never names the self-hosted target version, because nobody has committed to it yet.</p></article>
+        <article class="rule"><b>03</b><h3>Shipped in both</h3><p>The plain LTS callout wins. A self-hosted reader has it, so the SaaS-only badge would understate it.</p></article>
+        <article class="rule"><b>04</b><h3>Shipped in the new major</h3><p>Plain in the new tree, and mirrored into the current LTS tree with a SaaS badge until the new family reaches general availability.</p></article>
+        <article class="rule"><b>05</b><h3>Not released</h3><p>Documented nowhere. It goes on a watchlist that a daily routine re-gates, so a deferred item can't live only in someone's memory.</p></article>
+        <article class="rule"><b>06</b><h3>Renamed or removed</h3><p>Never a find-and-replace across a tree that still serves readers of the old name. A rename gets a marked note until the next tree fork; a removal gets stripped only where it shipped.</p></article>
+      </div>
+    </div></section>
+
+    <section><div class="wrap measure">
+      <div class="label">03 / The check that waits</div>
+      <h2>A test that is <em>supposed</em> to pass, until the day it can't.</h2>
+      <p>Every SaaS badge has an expiry date: the day its features reach self-hosted with the next LTS. On that day every badge has to be flipped or removed, across every page that carries one, and that pass used to run from memory. It had missed themes before.</p>
+      <p>So a validation check now reads every badge and fails the build if the release it names is not newer than the family of the tree it sits in. Today it passes, deliberately. The next LTS tree is created by copying the current one, and the moment that copy exists, every badge it carries fails at once. Nothing can be forgotten because the build won't let anything through until it's handled.</p>
+      <div class="pull">The best time to write the check for a once-a-year task is the month after you last did it by hand.</div>
+      <p>The badges themselves had a quieter bug. They started as one shared snippet that took the release number as a property. That renders fine for people. But the documentation platform's AI outputs, its search API, its MCP search and its full-text export for language models, dropped snippet properties, so AI readers got an unfilled placeholder where the version should be. The fix was one static snippet per release, with the wording kept identical across them, and a report to the platform vendor.</p>
+      <p>A version label that only renders for people is one that every assistant answering from the docs never sees.</p>
+    </div></section>
+
+    <section><div class="wrap measure">
+      <div class="label">04 / Where the rules came from</div>
+      <h2>Every rule is a <em>scar.</em></h2>
+      <p>The playbook's hard rules are short, and each one records the failure that produced it. A few of them:</p>
+      <h3>A search with no control is not evidence</h3>
+      <p>A search for a feature returned zero files on a branch that held thirty, because <code>git grep</code> uses basic regular expressions, where <code>?</code> is a literal character. The feature was cut from a set of release notes on that zero, then put back. Now every deciding search uses extended syntax and runs next to a control: a pattern known to be present, at the same ref, with its count written down beside the verdict.</p>
+      <h3>Gate where the feature landed</h3>
+      <p>One check followed a ticket's own pointer to a search form that was genuinely unchanged and concluded the feature had not shipped. It had, as column filters on a table and a new page. The gate now looks at the specific surface a reader would touch: the component, the palette entry, the route, the column.</p>
+      <h3>A verdict is a starting point</h3>
+      <p>The gate's fallback PR search once matched a ticket to an unrelated configuration commit and reported it shipped across six releases. The ticket had no fix at all. It fails the other way too: squash merges drop the ticket key from the commit subject, and in one patch harvest 8 of 21 candidates were invisible to key searches. Anything headed for rendered copy gets its commit opened and read.</p>
+      <h3>Diff the file tree, not the ticket list</h3>
+      <p>For feature releases the highest-yield step turned out to be mechanical: list every file added to the application between the previous release's pin and the new one, then write a verdict for each. In one release that recovered three of five themes the ticket-driven pass had missed.</p>
+    </div></section>
+
+    <section><div class="wrap measure">
+      <div class="label">05 / The release notes</div>
+      <h2>Two kinds of release, two <em>shapes</em> of page.</h2>
+      <p>The notes follow a written style contract with a template and a reference page for each release type. A feature release is a set of feature cards, each ending in a link to the page that documents it, with a mechanical sweep checking that every linked page carries an availability signal. An LTS patch is one flat page: a highlight, upgrade notes with every operator action restated as a bullet, then a full changelog grouped as new, changed, fixed, removed and security.</p>
+      <p>The patch page is flat on purpose. Customers read patch notes as reference, mid-upgrade. Tabs and collapsed sections hide the upgrade actions, break find-in-page and take away the table of contents, which are the three things that reader needs.</p>
+      <p>Each feature release also opens with an animated hero I build as a standalone page and embed at the top. This is the one for 6.0.0, live on <a href="https://docs.flowx.ai/release-notes/v6.x/v6.0.0-october-2026/v6.0.0-october-2026" target="_blank" rel="noreferrer" style="border-bottom:1px solid var(--orange)">its release notes</a>:</p>
+    </div>
+    <div class="wrap measure">
+      <div class="frame"><iframe src="https://s3.eu-west-1.amazonaws.com/docx.flowx.ai/6.x/hero-6.0.0.html" title="FlowX.AI 6.0.0 release hero" loading="lazy"></iframe></div>
+      <p class="caption">The 6.0.0 release hero, embedded live.</p>
+      <div class="gallery">
+        <a href="https://s3.eu-west-1.amazonaws.com/docx.flowx.ai/5.6/hero-5.6.0.html" target="_blank" rel="noreferrer">5.6.0 ↗</a>
+        <a href="https://s3.eu-west-1.amazonaws.com/docx.flowx.ai/5.6/hero-5.7.0.html" target="_blank" rel="noreferrer">5.7.0 ↗</a>
+        <a href="https://s3.eu-west-1.amazonaws.com/docx.flowx.ai/5.6/hero-5.8.0.html" target="_blank" rel="noreferrer">5.8.0 ↗</a>
+        <a href="https://s3.eu-west-1.amazonaws.com/docx.flowx.ai/hero-5.9.0.html" target="_blank" rel="noreferrer">5.9.0 ↗</a>
+        <a href="https://s3.eu-west-1.amazonaws.com/docx.flowx.ai/5.9/hero-5.10.0.html" target="_blank" rel="noreferrer">5.10.0 ↗</a>
+        <a href="https://s3.eu-west-1.amazonaws.com/docx.flowx.ai/5.9/hero-5.11.0.html" target="_blank" rel="noreferrer">5.11.0 ↗</a>
+        <a href="https://s3.eu-west-1.amazonaws.com/docx.flowx.ai/5.9/hero-5.12.0.html" target="_blank" rel="noreferrer">5.12.0 ↗</a>
+        <a href="https://s3.eu-west-1.amazonaws.com/docx.flowx.ai/5.9/hero-5.13.0.html" target="_blank" rel="noreferrer">5.13.0 ↗</a>
+        <a href="https://s3.eu-west-1.amazonaws.com/docx.flowx.ai/6.x/hero-6.0.0.html" target="_blank" rel="noreferrer">6.0.0 ↗</a>
+      </div>
+      <div class="cost">
+        <div><h3>What it bought</h3><p>"Is this in my version?" has an answer anyone can reproduce from git, with the command that settled it. The once-a-year badge flip is enforced by the build instead of by memory, and AI readers get the same version label people do.</p></div>
+        <div><h3>What it cost</h3><p>Ticket systems and git disagree constantly, and every disagreement is work. The gate is slower than trusting a fix version, the playbook only grows, and the gate itself can be wrong, which is why its own last rule says to read the commit.</p></div>
+      </div>
+    </div></section>
+
+    <section class="next"><div class="wrap">
+      <div class="label">Next</div>
+      <h2>The checks that run on <em>every</em> edit.</h2>
+      <p style="max-width:520px">The release gate decides where a change belongs. Case study 02 covers the rule-based gate that runs on every single edit, where each rule encodes a bug that already reached a page.</p>
+      <a class="button" href="../pipeline/">Read case study 02 →</a>
+      <a class="button" href="../">Back to the portfolio</a>
+    </div></section>
+  </main>
+
+  <footer><div class="wrap"><span>© 2026 Dragos Caravasile</span><span><a href="../">Portfolio</a> / Case study 03</span></div></footer>
+</body>
+</html>
